@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
-
 import sys
-from p2_drop_empty import drop_empty
-from p2_get_ints import get_ints
 from p2_iter_lines import iter_lines
-from p2_split_items import split_items
 from p2_strip_spaces import strip_spaces
+from p2_drop_empty import drop_empty
+from p2_split_items import split_items
+from p2_get_ints import get_ints
+
 
 teststring = """
     123 asfd afsd df11
@@ -14,12 +14,17 @@ teststring = """
     asdf 45 asdfasd 45fd
     2asdfa fds8"""
 
+
 def my_sum(iter):
     """ Считает сумму элементов целых во входном потоке """
     total_sum = 0
     for item in iter:
         total_sum += item
-        yield total_sum
+    return total_sum
+
+
+with open("test_file.txt", "r") as fd:
+    assert my_sum(get_ints(split_items(drop_empty(strip_spaces(iter_lines(fd)))))) == 18
 
 
 if __name__ == '__main__':
@@ -28,6 +33,5 @@ if __name__ == '__main__':
     gen3 = drop_empty(gen2)
     gen4 = split_items(gen3)
     gen5 = get_ints(gen4)
-    gen6 = my_sum(gen5)
-    for line in gen6:
-        print repr(line)
+    total_sum = my_sum(gen5)
+    print total_sum
