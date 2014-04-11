@@ -2,14 +2,10 @@
 
 import sys
 import string
-from p2_drop_empty import drop_empty
 from p2_iter_lines import iter_lines
 from p2_strip_spaces import strip_spaces
+from p2_drop_empty import drop_empty
 
-# 123 asfd afsd df11
-# asdf fdfg 2.0 asdf
-# ad.sdf 6sd.f9sdf
-# 2asdfa fds8
 
 def split_items(iter):
     """
@@ -37,6 +33,10 @@ def split_items(iter):
             processed_els.append(el)
         for pel in processed_els:
             yield pel
+
+
+with open("test_file.txt", "r") as fd:
+    assert list(split_items(drop_empty(strip_spaces(iter_lines(fd))))) == [1, 2, 3, 3.45, 'abra_cadabra', 12]
 
 
 if __name__ == '__main__':
