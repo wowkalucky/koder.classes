@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-
 import sys
 
 
@@ -15,9 +14,12 @@ def iter_lines(fd):
             break
         line += s
         if s == '\n':
-            yield line
+            yield line[:-1]
             line = ''
-    yield line
+
+
+with open("test_file.txt", "r") as fd:
+    assert list(iter_lines(fd)) == ['1 2 3 3.45 abra_cadabra   ', '', '12']
 
 
 if __name__ == '__main__':
