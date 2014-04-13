@@ -10,20 +10,25 @@
 Функции-генераторы должны обрабатывать элементы по мере запроса значений генератора.
 """
 
-# map()
+def map_rq_naive(fn, iterable):
+    assert isinstance(iterable, (list, tuple))
+    if len(iterable) < 2:
+        return [fn(iterable[0])]
+    else:
+        return [fn(iterable[0])] + map_rq(fn, iterable[1:])
+
+
 def map_rq(fn, iterable):
+    i = iter(iterable)
+    try:
+        _next = next(i)
+    except StopIteration:
+        return []
+    else:
+        return [fn(_next)] + map_rq(fn, i)
 
-
-
-
-
-
-
-# assert map(lambda x: x ** 2, range(5)) == [0, 1, 4, 9, 16]
-# assert map_rq(lambda x: x ** 2, range(5)) == [0, 1, 4, 9, 16]
 
 if __name__ == '__main__':
-    # print map_rq(lambda x: x ** x, range(5))
-
-    print map(lambda x: x ** 2, range(5))
-    print map(lambda x: x ** 2, xrange(5))
+    print "map",  map(lambda x: x ** 2, xrange(5))
+    print "map_rq_naive", map_rq_naive(lambda x: x ** 2, [0,1,2,3,4])
+    print "map_rq", map_rq(lambda x: x ** 2, xrange(5))
