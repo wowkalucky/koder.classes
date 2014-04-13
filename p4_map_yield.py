@@ -15,11 +15,9 @@ def map_yield(fn, iterable):
         yield fn(item)
 
 
-
-
-
 if __name__ == '__main__':
     print map(lambda x: x ** 2, xrange(5))
     print map_yield(lambda x: x ** 2, xrange(5))
-    print map_yield(lambda x: x ** 2, xrange(5))
-
+    map_gen = map_yield(lambda x: x ** 2, xrange(5))
+    for x in map_gen:
+        print x
