@@ -19,7 +19,7 @@ def map_rq_naive(fn, iterable):
 
 
 def map_rq(fn, iterable):
-    i = iter(iterable)
+    i = iter(iterable)     # this can be done much simpler
     try:
         _next = next(i)
     except StopIteration:
