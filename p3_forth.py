@@ -39,13 +39,45 @@ print
 eval_forth("example.frt")
 """
 import string
+import keyword
+
+
+# TODO: put((b,)) < arguments interface
+# empty srting case
+# stack validation for add, sub
+# quotes cutting
 
 
 STACK = []
 
-def run_command(cmd_name, *args):
-    def put(*arg):
-        STACK.append(arg[0])
+def run_command(cmd_name, args):
+
+
+    def put(args=None):
+        STACK.append(*args)
+
+    def pop(args=None):
+        return STACK.pop()
+
+    def add(args=None):
+        put((pop() + pop(),))
+
+    def sub(args=None):
+        a = pop()
+        b = pop()
+        try:
+            c = b - a
+        except:
+            put((b,))
+            put((a,))
+        else:
+            put((c,))
+
+    def _print(args=None):
+        print pop()
+
+    # ...
+
 
     locals()[cmd_name](args)
 
@@ -73,6 +105,9 @@ def parser(strng):
                     arg = float(arg)
                 except:
                     pass
+        # elif arg and arg[0] in ["'", '"']:
+        #     arg.strip("'")
+        #     arg.strip('"')
         elif arg and arg[0] not in ["'", '"']:
             raise TypeError, 'Arguments must be int, float or string (in single or double quotes)'
         return arg
@@ -88,7 +123,10 @@ def parser(strng):
     parts = strng.split(" ")
     if validate(parts):
         parsed['type'] = 'command'
-        parsed['value'] = parts[0]
+        if parts[0] in keyword.kwlist:
+            parsed['value'] = "_" + parts[0]
+        else:
+            parsed['value'] = parts[0]
         parsed['args'] = map(argparse, parts[1:])
         return parsed
 
@@ -98,10 +136,8 @@ def proc_line(line):
     if parsed and parsed['type'] == 'command':
         command = parsed['value']
         args = parsed['args']
-        print command, args
-        print STACK
         run_command(command, args)
-        print STACK
+        print "STACK", STACK
 
 
 def eval_forth(filename):

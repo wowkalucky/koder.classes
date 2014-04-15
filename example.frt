@@ -7,8 +7,14 @@
 3
 4
 put 1
-#put 3
-#put "5"
-#put 'asdf'
-#add
-#print
+put 3
+add
+print
+put 4
+put 2
+sub
+print
+#
+put "1"
+put "3"
+add
