@@ -43,15 +43,14 @@ import keyword
 
 
 # TODO: put((b,)) < arguments interface
-# empty srting case
 # stack validation for add, sub
-# quotes cutting
 
 
 STACK = []
 
-def run_command(cmd_name, args):
-
+def run_command(cmd_name, args=None):
+    if args is not None:
+        pass
 
     def put(args=None):
         STACK.append(*args)
@@ -60,6 +59,8 @@ def run_command(cmd_name, args):
         return STACK.pop()
 
     def add(args=None):
+        # if len(STACK) < 2:
+        #     raise
         put((pop() + pop(),))
 
     def sub(args=None):
@@ -105,30 +106,30 @@ def parser(strng):
                     arg = float(arg)
                 except:
                     pass
-        # elif arg and arg[0] in ["'", '"']:
-        #     arg.strip("'")
-        #     arg.strip('"')
-        elif arg and arg[0] not in ["'", '"']:
+        elif arg and arg[0] in ["'", '"']:
+            arg = arg.strip("'").strip('"')
+        else:
             raise TypeError, 'Arguments must be int, float or string (in single or double quotes)'
         return arg
 
     strng = strng.rstrip('\n')
     parsed = {}
-    if strng[0] == "#":
-        parsed['type'] = 'comment'
-        parsed['value'] = strng
-        parsed['args'] = None
-        return parsed
+    if strng:
+        if strng[0] == "#":
+            parsed['type'] = 'comment'
+            parsed['value'] = strng
+            parsed['args'] = None
+            return parsed
 
-    parts = strng.split(" ")
-    if validate(parts):
-        parsed['type'] = 'command'
-        if parts[0] in keyword.kwlist:
-            parsed['value'] = "_" + parts[0]
-        else:
-            parsed['value'] = parts[0]
-        parsed['args'] = map(argparse, parts[1:])
-        return parsed
+        parts = strng.split(" ")
+        if validate(parts):
+            parsed['type'] = 'command'
+            if parts[0] in keyword.kwlist:
+                parsed['value'] = "_" + parts[0]
+            else:
+                parsed['value'] = parts[0]
+            parsed['args'] = map(argparse, parts[1:])
+            return parsed
 
 
 def proc_line(line):
@@ -136,8 +137,9 @@ def proc_line(line):
     if parsed and parsed['type'] == 'command':
         command = parsed['value']
         args = parsed['args']
-        run_command(command, args)
-        print "STACK", STACK
+        print "args", args
+
+        # run_command(command, args)
 
 
 def eval_forth(filename):

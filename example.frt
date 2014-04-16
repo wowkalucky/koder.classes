@@ -14,7 +14,8 @@ put 4
 put 2
 sub
 print
-#
+
 put "1"
 put "3"
+add
 add
