@@ -11,19 +11,21 @@ import time
 __author__ = 'wowkalucky'
 
 
-def wait(mix_time, min_time):
+def wait(min_time, max_time):
+    """ min_time, max_time - waiting limits (ints) """
     def deco(fn):
-        delay = random.randint(mix_time, min_time)
         def inner(*args, **kwargs):
+            delay = random.randint(min_time, max_time)
             time.sleep(delay)
             return fn(*args, **kwargs)
         return inner
     return deco
 
 
-@wait(1, 5)
+@wait(1, 10)
 def some_func(name="Lola"):
     print "Run, {}, run!".format(name)
+    return True
 
 
 if __name__=='__main__':
