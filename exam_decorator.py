@@ -15,7 +15,7 @@ def wait(min_time, max_time):
     """ min_time, max_time - waiting limits (ints) """
     def deco(fn):
         def inner(*args, **kwargs):
-            delay = random.randint(min_time, max_time)
+            delay = random.randint(min_time, max_time)  # why only integers???
             time.sleep(delay)
             return fn(*args, **kwargs)
         return inner
