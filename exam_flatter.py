@@ -19,15 +19,15 @@ import collections
 __author__ = 'wowkalucky'
 
 
-def flatten(multilevel_list):
+def flatten(multilevel_list): # O(n**3) speed and O(n**2) space consumption
     """
     Gets multilevel list of objects
     -> flatten list of every level objects
     """
-    for item in copy.deepcopy(multilevel_list):
-        if isinstance(item, collections.Iterable):
-            multilevel_list.remove(item)
-            map(lambda x: multilevel_list.append(x), flatten(item))
+    for item in copy.deepcopy(multilevel_list): # copy.copy would be enought
+        if isinstance(item, collections.Iterable): # not pythonic way, yet works
+            multilevel_list.remove(item) 
+            map(lambda x: multilevel_list.append(x), flatten(item)) # multilevel_list.extend(flatten(item))
     return multilevel_list
 
 
